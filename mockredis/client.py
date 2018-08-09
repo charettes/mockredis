@@ -539,6 +539,8 @@ class MockRedis(object):
 
     def hmset(self, hashkey, value):
         """Emulate hmset."""
+        if len(value) == 0:
+            raise ResponseError("empty mapping passed to 'hmset'")
 
         redis_hash = self._get_hash(hashkey, 'HMSET', create=True)
         for key, value in value.items():

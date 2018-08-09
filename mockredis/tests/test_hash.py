@@ -1,6 +1,6 @@
 from nose.tools import eq_, ok_
 
-from mockredis.tests.fixtures import setup, teardown
+from mockredis.tests.fixtures import raises_response_error, setup, teardown
 
 
 class TestRedisHash(object):
@@ -71,6 +71,10 @@ class TestRedisHash(object):
         eq_(True, self.redis.hmset(hashkey, {"key1": "value1", "key2": "value2"}))
         eq_(b"value1", self.redis.hget(hashkey, "key1"))
         eq_(b"value2", self.redis.hget(hashkey, "key2"))
+
+    @raises_response_error
+    def test_hmset_empty(self):
+        self.redis.hmset("hash", {})
 
     def test_hmset_integral(self):
         hashkey = "hash"
